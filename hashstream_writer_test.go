@@ -3,7 +3,6 @@ package hashstream
 import (
 	"encoding/hex"
 	"hash"
-	"io"
 	"io/ioutil"
 	"log"
 	"testing"
@@ -25,17 +24,12 @@ func applyWriterHash(text string, hs hash.Hash, bufSize int) (string, error) {
 	writer := ioutil.Discard
 	hr := NewHashWriter(writer, hs)
 
-	for {
-		buf := make([]byte, bufSize)
-		_, err := hr.Write(buf)
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			log.Println(err)
-			return "", err
-		}
+	_, err := hr.Write([]byte(text))
+	if err != nil {
+		log.Println(err)
+		return "", err
 	}
+
 	return hex.EncodeToString(hr.Sum()), nil
 
 }

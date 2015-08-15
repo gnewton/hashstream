@@ -57,7 +57,7 @@ func init() {
 
 }
 
-func TestReader(t *testing.T) {
+func testReader(t *testing.T) {
 	for text, tcrm := range textCryptoResultMap {
 		for hsh, sum := range tcrm {
 			hexhash, err := applyHash(text, hsh, 32)

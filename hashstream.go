@@ -68,7 +68,7 @@ func NewHashWriter(w io.Writer, h hash.Hash) *hashWriter {
 }
 
 func (l *hashWriter) Write(p []byte) (n int, err error) {
-	n, err = l.Write(p)
+	n, err = l.writer.Write(p)
 	if err != nil {
 		return -1, err
 	}
