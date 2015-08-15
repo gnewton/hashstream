@@ -2,6 +2,7 @@
 package hashstream
 
 import (
+	"crypto/md5"
 	"errors"
 	"hash"
 	"io"
@@ -14,11 +15,24 @@ func NewHashReader(r io.Reader, h hash.Hash) *HashReader {
 	}
 }
 
+func NewMD5Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   md5.New(),
+	}
+}
+
 func NewHashWriter(w io.Writer, h hash.Hash) *HashWriter {
-	h.Reset()
 	return &HashWriter{
 		writer: w,
 		hash:   h,
+	}
+}
+
+func NewMD5Writer(w io.Writer) *HashWriter {
+	return &HashWriter{
+		writer: w,
+		hash:   md5.New(),
 	}
 }
 

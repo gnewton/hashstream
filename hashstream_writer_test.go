@@ -9,6 +9,7 @@ import (
 )
 
 func TestWriter(t *testing.T) {
+	resetCrypto()
 	for text, tcrm := range textCryptoResultMap {
 		for hsh, sum := range tcrm {
 			hexhash, err := applyWriterHash(text, hsh, 32)

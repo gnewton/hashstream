@@ -6,10 +6,8 @@ import (
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/hex"
-	//	"fmt"
 	"hash"
 	"io"
-	"log"
 	"strings"
 	"testing"
 )
@@ -43,7 +41,7 @@ const sha512_0 = "3a5c261acc31514d590e2557979ac2fc437553a9b170c1d26cdfa93ca9a6cc
 
 var textCryptoResultMap map[string]map[hash.Hash]string
 
-func init() {
+func resetCrypto() {
 	cryptoResultMap := map[hash.Hash]string{
 		md5.New():    md5_0,
 		sha1.New():   sha1_0,
@@ -58,6 +56,7 @@ func init() {
 }
 
 func testReader(t *testing.T) {
+	resetCrypto()
 	for text, tcrm := range textCryptoResultMap {
 		for hsh, sum := range tcrm {
 			hexhash, err := applyHash(text, hsh, 32)
@@ -69,27 +68,8 @@ func testReader(t *testing.T) {
 
 }
 
-func TestReaderReuseHash(t *testing.T) {
-	for text, tcrm := range textCryptoResultMap {
-		for hsh, sum := range tcrm {
-			hexhash, err := applyHash(text, hsh, 32)
-			if err != nil {
-				t.FailNow()
-			}
-			// resuse hash without resetting
-			hexhash, err = applyHash(text, hsh, 32)
-			if err != nil {
-				t.FailNow()
-			}
-			if hexhash == sum {
-				t.FailNow()
-			}
-		}
-	}
-
-}
-
 func Test_Reader_ShouldFailWithAlteredText(t *testing.T) {
+	resetCrypto()
 	for text, tcrm := range textCryptoResultMap {
 		for hsh, sum := range tcrm {
 			hexhash, err := applyHash(text+"f", hsh, 32)
@@ -112,7 +92,6 @@ func applyHash(text string, hs hash.Hash, bufSize int) (string, error) {
 			if err == io.EOF {
 				break
 			}
-			log.Println(err)
 			return "", err
 		}
 	}
