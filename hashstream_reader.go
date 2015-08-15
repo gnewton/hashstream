@@ -1,13 +1,41 @@
 // Provides crypto hash Writer/Reader support for large files or streaming.
 //
 // Inspired by Java's DigestInputStream/DigestOutputStream https://docs.oracle.com/javase/7/docs/api/java/security/DigestInputStream.html
-// Example
 //
+// Example: reader
 //
-//     [example here]
-//     [example here]
+//	package main
 //
-//     [example here]
+//	import (
+//		"crypto/md5"
+//		"encoding/hex"
+//		"fmt"
+//		"github.com/gnewton/hashstream"
+//		"io"
+//		"log"
+//		"strings"
+//	)
+//
+//	func main() {
+//		reader := strings.NewReader("hello")
+//		hr, err := hashstream.NewHashReader(reader, md5.New())
+//		for {
+//			buf := make([]byte, 4)
+//			_, err = hr.Read(buf)
+//			if err != nil {
+//				if err == io.EOF {
+//					break
+//				}
+//				log.Fatal(err)
+//			}
+//		}
+//		fmt.Println(hex.EncodeToString(hr.Sum()))
+//	}
+//
+//      Output: 5d41402abc4b2a76b9719d911017c592
+//
+// Example: writer
+//
 package hashstream
 
 import (
