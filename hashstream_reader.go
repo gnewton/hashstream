@@ -21,46 +21,29 @@ func NewHashReader(r io.Reader, h hash.Hash) (*HashReader, error) {
 	}, nil
 }
 
-func NewMD5Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   md5.New(),
-	}
+func NewMD5Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, md5.New())
 }
 
-func NewSHA1Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   sha1.New(),
-	}
+func NewSHA1Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, sha1.New())
+
 }
 
-func NewSHA224Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   sha256.New224(),
-	}
+func NewSHA224Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, sha256.New224())
 }
 
-func NewSHA256Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   sha256.New(),
-	}
+func NewSHA256Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, sha256.New())
 }
 
-func NewSHA384Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   sha512.New384(),
-	}
+func NewSHA384Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, sha512.New384())
 }
 
-func NewSHA512Reader(r io.Reader) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   sha512.New(),
-	}
+func NewSHA512Reader(r io.Reader) (*HashReader, error) {
+	return NewHashReader(r, sha512.New())
 }
 
 type HashReader struct {

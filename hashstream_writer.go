@@ -20,46 +20,28 @@ func NewHashWriter(w io.Writer, h hash.Hash) (*HashWriter, error) {
 	}, nil
 }
 
-func NewMd5Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   md5.New(),
-	}
+func NewMd5Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, md5.New())
 }
 
-func NewSha1Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   sha1.New(),
-	}
+func NewSha1Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, sha1.New())
 }
 
-func NewSha224Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   sha256.New224(),
-	}
+func NewSha224Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, sha256.New224())
 }
 
-func NewSha256Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   sha256.New(),
-	}
+func NewSha256Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, sha256.New())
 }
 
-func NewSha384Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   sha512.New384(),
-	}
+func NewSha384Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, sha512.New384())
 }
 
-func NewSha512Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   sha512.New(),
-	}
+func NewSha512Writer(w io.Writer) (*HashWriter, error) {
+	return NewHashWriter(w, sha512.New())
 }
 
 type HashWriter struct {
