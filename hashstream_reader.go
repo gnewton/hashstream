@@ -36,6 +36,35 @@
 //
 // Example: writer
 //
+// 	package main
+//
+// 	import (
+// 		"crypto/md5"
+// 		"encoding/hex"
+// 		"fmt"
+// 		"github.com/gnewton/hashstream"
+// 		"io/ioutil"
+// 		"log"
+// 	)
+//
+// 	func main() {
+//
+// 		writer := ioutil.Discard
+// 		hw, err := hashstream.NewHashWriter(writer, md5.New())
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+//
+// 		_, err = hw.Write([]byte("hello"))
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+//
+// 		fmt.Println(hex.EncodeToString(hw.Sum()))
+// 	}
+//
+//      Output: 5d41402abc4b2a76b9719d911017c592
+//
 package hashstream
 
 import (
