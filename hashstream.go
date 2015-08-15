@@ -7,6 +7,21 @@ import (
 	"io"
 )
 
+func NewHashReader(r io.Reader, h hash.Hash) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   h,
+	}
+}
+
+func NewHashWriter(w io.Writer, h hash.Hash) *HashWriter {
+	h.Reset()
+	return &HashWriter{
+		writer: w,
+		hash:   h,
+	}
+}
+
 type HashReader struct {
 	reader io.Reader
 	hash   hash.Hash
@@ -15,13 +30,6 @@ type HashReader struct {
 type HashWriter struct {
 	writer io.Writer
 	hash   hash.Hash
-}
-
-func NewHashReader(r io.Reader, h hash.Hash) *HashReader {
-	return &HashReader{
-		reader: r,
-		hash:   h,
-	}
 }
 
 func (l *HashReader) Sum() []byte {
@@ -57,14 +65,6 @@ func (l *HashReader) Read(p []byte) (n int, err error) {
 		}
 	}
 	return
-}
-
-func NewHashWriter(w io.Writer, h hash.Hash) *HashWriter {
-	h.Reset()
-	return &HashWriter{
-		writer: w,
-		hash:   h,
-	}
 }
 
 func (l *HashWriter) Write(p []byte) (n int, err error) {
