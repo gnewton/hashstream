@@ -1,4 +1,7 @@
-// package provides Writer/Reader support for large files or streaming, inspired by Java's DigestInputStream/DigestOutputStream https://docs.oracle.com/javase/7/docs/api/java/security/DigestInputStream.html
+// Provides crypto hash Writer/Reader support for large files or streaming. <br> Inspired by Java's DigestInputStream/DigestOutputStream https://docs.oracle.com/javase/7/docs/api/java/security/DigestInputStream.html
+// Usage:
+//
+
 package hashstream
 
 import (
