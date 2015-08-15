@@ -55,6 +55,21 @@ func resetCrypto() {
 
 }
 
+func TestReader_NilReader(t *testing.T) {
+	_, err := NewHashReader(nil, md5.New())
+	if err == nil {
+		t.FailNow()
+	}
+}
+
+func TestReader_NilHash(t *testing.T) {
+	r := strings.NewReader("hello")
+	_, err := NewHashReader(r, nil)
+	if err == nil {
+		t.FailNow()
+	}
+}
+
 func testReader(t *testing.T) {
 	resetCrypto()
 	for text, tcrm := range textCryptoResultMap {
@@ -83,11 +98,14 @@ func Test_Reader_ShouldFailWithAlteredText(t *testing.T) {
 
 func applyHash(text string, hs hash.Hash, bufSize int) (string, error) {
 	reader := strings.NewReader(text)
-	hr := NewHashReader(reader, hs)
+	hr, err := NewHashReader(reader, hs)
+	if err != nil {
+		return "", err
+	}
 
 	for {
 		buf := make([]byte, bufSize)
-		_, err := hr.Read(buf)
+		_, err = hr.Read(buf)
 		if err != nil {
 			if err == io.EOF {
 				break

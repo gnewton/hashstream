@@ -3,16 +3,22 @@ package hashstream
 
 import (
 	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
 	"errors"
 	"hash"
 	"io"
 )
 
-func NewHashReader(r io.Reader, h hash.Hash) *HashReader {
+func NewHashReader(r io.Reader, h hash.Hash) (*HashReader, error) {
+	if r == nil || h == nil {
+		return nil, errors.New("Reader or hash are nil: no allowed")
+	}
 	return &HashReader{
 		reader: r,
 		hash:   h,
-	}
+	}, nil
 }
 
 func NewMD5Reader(r io.Reader) *HashReader {
@@ -22,27 +28,43 @@ func NewMD5Reader(r io.Reader) *HashReader {
 	}
 }
 
-func NewHashWriter(w io.Writer, h hash.Hash) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   h,
+func NewSHA1Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   sha1.New(),
 	}
 }
 
-func NewMD5Writer(w io.Writer) *HashWriter {
-	return &HashWriter{
-		writer: w,
-		hash:   md5.New(),
+func NewSHA224Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   sha256.New224(),
+	}
+}
+
+func NewSHA256Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   sha256.New(),
+	}
+}
+
+func NewSHA384Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   sha512.New384(),
+	}
+}
+
+func NewSHA512Reader(r io.Reader) *HashReader {
+	return &HashReader{
+		reader: r,
+		hash:   sha512.New(),
 	}
 }
 
 type HashReader struct {
 	reader io.Reader
-	hash   hash.Hash
-}
-
-type HashWriter struct {
-	writer io.Writer
 	hash   hash.Hash
 }
 
@@ -79,18 +101,4 @@ func (l *HashReader) Read(p []byte) (n int, err error) {
 		}
 	}
 	return
-}
-
-func (l *HashWriter) Write(p []byte) (n int, err error) {
-	n, err = l.writer.Write(p)
-	if err != nil {
-		return -1, err
-	}
-	l.hash.Write(p)
-
-	return
-}
-
-func (l *HashWriter) Sum() []byte {
-	return sum(l.hash)
 }
