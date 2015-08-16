@@ -71,6 +71,27 @@ func main() {
 	fmt.Println(md5Sum)
 	fmt.Println(hex.EncodeToString(hash.Sum(nil)))
 }
+
+```
+
+Output:
+```
+0ed8481c815f1977d7df85cf73e1c078
+0ed8481c815f1977d7df85cf73e1c078
+```
+
+#Variations
+Note that multiple hashes (should you need this) could be calculated at once, with something like:
+```
+	md5 := md5.New()
+	sha256 := sha256.New()
+	writer := io.MultiWriter(fo, md5, sha256)
+	.
+	.
+	.
+	fmt.Println(hex.EncodeToString(md5.Sum(nil)))
+	fmt.Println(hex.EncodeToString(sha256.Sum(nil)))	
+
 ```
 
 #License
