@@ -1,18 +1,3 @@
-# hashstream
-Originally I wrote this to providce crypto hash Writer/Reader support for files too large to fit in memory or streaming. Inspired by Java's [DigestInputStream](https://docs.oracle.com/javase/7/docs/api/java/security/DigestInputStream.html) and [DigestInputStream](https://docs.oracle.com/javase/7/docs/api/java/security/DigestInputStream.html)
-
-However, it was [pointed out](https://groups.google.com/d/msg/golang-nuts/NOtenKfslLg/6GcXf6nx-TUJ) to me that (io.MultWriter)[http://golang.org/pkg/io/#MultiWriter] would be a better way to do this.
-
-Yes, it was!  :-)
-
-So I have replaced my original code with an example of doing the same this with io.MultiWriter
-
-# Example
-
-Can be found in main.go:
-
-
-```
 package main
 
 import (
@@ -71,12 +56,3 @@ func main() {
 	fmt.Println(md5Sum)
 	fmt.Println(hex.EncodeToString(hash.Sum(nil)))
 }
-```
-
-#License
-MIT license. See LICENSE file
-
-Copyright 2015 Glen Newton
-
-
-
