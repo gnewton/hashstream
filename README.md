@@ -53,21 +53,12 @@ func main() {
 	hash := md5.New()
 	writer := io.MultiWriter(fo, hash)
 
-	buf := make([]byte, 32)
-	for {
-		// read a chunk
-		n, err := reader.Read(buf)
-		if err != nil && err != io.EOF {
-			panic(err)
-		}
-		if n == 0 {
-			break
-		}
-
-		if _, err := writer.Write(buf[:n]); err != nil {
-			panic(err)
-		}
+	writer := io.MultiWriter(fo, hash)
+	if _, err := io.Copy(writer, reader) {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
+
 	fmt.Println(md5Sum)
 	fmt.Println(hex.EncodeToString(hash.Sum(nil)))
 }
